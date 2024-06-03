@@ -1,0 +1,66 @@
+# @file
+# Configuration for building authenticated variables
+##
+# Copyright (C) Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+############################
+# Signed Objects Mapping   #
+############################
+[SIGNING_CERTIFICATE_LIST]
+  #
+  # These represent the certificates that were used to sign the objects
+  # They are used to verify the signature on the object
+  #
+  2011_KEK_PUB_KEY = "../PreSignedObjects/MicCorKEKCA2011_2011-06-24.der"
+  2023_KEK_PUB_KEY = "../PreSignedObjects/MicCorKEKCA2023_2023-01-01.der"
+
+[DBX]
+#
+# This section is used to define the DBX database
+#
+  [DBX.2011_SIGNED_PAYLOAD]
+    #
+    # The signer of the 2011 Signed Payload
+    #
+    #
+    # The signer of the 2011 Signed Payload
+    #
+    signer = "2011_KEK_PUB_KEY"
+
+    #
+    # What is expected to be in the DBX database divided by architecture
+    #
+    dbx_info = [
+      "PreSignedObjects/DBX/Hashes/dbx_info_msft_4_23_24.csv"
+      ]
+
+    #
+    # The actual signed DBX database divided by architecture
+    #
+    amd64 = "PostSignedObjects/DBX/amd64/DBXUpdate.bin"
+    x86 = "PostSignedObjects/DBX/x86/DBXUpdate.bin"
+    arm = "PostSignedObjects/DBX/arm/DBXUpdate.bin"
+    arm64 = "PostSignedObjects/DBX/arm64/DBXUpdate.bin"
+
+  [DBX.2023_SIGNED_PAYLOAD]
+    #
+    # The signer of the 2011 Signed Payload
+    #
+    signer = "2011_KEK_PUB_KEY"
+
+    #
+    # What is expected to be in the DBX database divided by architecture
+    #
+    dbx_info = [
+      "PreSignedObjects/DBX/SVN/dbx_info_msft_4_23_svns.csv",
+      "PreSignedObjects/DBX/Certificates/MicWinProPCA2011_2011-10-19.der"
+      ]
+  
+    #
+    # The actual signed DBX database divided by architecture
+    #
+    amd64 = "PostSignedObjects/Optional/DBX/amd64/DBXUpdate2024.bin"
+    x86 = "PostSignedObjects/Optional/DBX/x86/DBXUpdate2024.bin"
+    arm = "PostSignedObjects/Optional/DBX/arm/DBXUpdate2024.bin"
+    arm64 = "PostSignedObjects/Optional/DBX/arm64/DBXUpdate2024.bin"
