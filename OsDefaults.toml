@@ -1,0 +1,129 @@
+# @file
+##
+# This file will package and verify that the contents of the signed binaries are correct
+# and documented appropriately. It is expected that these binaries are used by an OS
+# to set the latest secure boot policies.
+#
+# The format of the files are as follows:
+#
+# The layout of `EFI_VARIABLE_AUTHENTICATION_2` authenticated variables is the following:
+#
+# ```txt
+# [EFI_TIME][WIN_CERTIFICATE][SIGNATURE][DATA]
+#    |            |             |        |
+#    |            |             |         `---- Variable Size
+#    |            |              `------------- Variable Size
+#    |             `--------------------------- Fixed Size
+#     `---------------------------------------- Fixed Size
+#
+# Where SIGNATURE = Asn.1 `SignedData` object or `ContentInfo` object
+# And DATA = EFI_SIGNATURE_LIST
+# ```
+# Note: Firmware only recently started supporting `ContentInfo` objects.
+# For most compatibility, use `SignedData`.
+#
+# Reference (UEFI Formats): https://uefi.org/specs/UEFI/2.10/
+# Reference (Signature): https://www.itu.int/ITU-T/formal-language/itu-t/x/x420/1999/PKCS7.html
+#
+# Copyright (C) Microsoft Corporation
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+#######################
+# Secure Boot Objects #
+#######################
+
+[DBX]
+# This represents all possible entries for the DBX database. An idealized DBX would contain
+# all architectural related binaries, SVNs, and Certificates
+latest_dbx = "PreSignedObjects/DBX/dbx_info_msft_1_14_25.json"
+
+[[DBX.General]]
+# General DBX refers to only the hashes of the binaries that are not allowed to be executed.
+# This is the most compatible entries for the DBX database. Currently, Secure Boot is going
+# through a transition to new certificate authorities.
+#
+# These files are not expected to always remain hash only. As the ecosystem transitions to
+# new certificate authorities, the DBX database will be updated to include the
+# old certificates* and SVNs.
+#
+# *Old certificates will be phased out over time. If the KEK authority is removed, and
+# certificate is removed from DB, then the DBX will not require the hashes authorized by
+# the relevant signing authority nor the old certificates.
+
+[[DBX.General.files]]
+path = "PostSignedObjects/DBX/amd64/DBXUpdate.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.General.files]]
+path = "PostSignedObjects/DBX/arm/DBXUpdate.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.General.files]]
+path = "PostSignedObjects/DBX/arm64/DBXUpdate.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.General.files]]
+path = "PostSignedObjects/DBX/x86/DBXUpdate.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.Optional]]
+# Optional refers the least compatible entries for the DBX database. However tha provide
+# the most security. Currently these are optional with a plan to transition to the new
+# certificate authorities over time.
+#
+# Most systems should not manually apply these. They should let the OS apply these as needed.
+# https://support.microsoft.com/en-us/topic/kb5025885-how-to-manage-the-windows-boot-manager-revocations-for-secure-boot-changes-associated-with-cve-2023-24932-41a975df-beb2-40c1-99a3-b3ff139f832d
+#
+# See revocation list for more information:
+#
+# DbxUpdate2024 - Certificate revocation for Secure Boot changes associated with CVE-2023-24932
+# DbxUpdateSVN - Smuggled self revocation hash for Windows Boot Manager in the DBX database
+
+# AMD64
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/amd64/DBXUpdate2024.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/amd64/DBXUpdateSVN.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+# ARM
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/arm/DBXUpdate2024.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/arm/DBXUpdateSVN.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+# ARM64
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/arm64/DBXUpdate2024.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/arm64/DBXUpdateSVN.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+# x86
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/x86/DBXUpdate2024.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
+
+[[DBX.Optional.files]]
+path = "PostSignedObjects/Optional/DBX/x86/DBXUpdateSVN.bin"
+expected_sha1 = 0x0
+signer = "Microsoft Corporation KEK CA 2011"
