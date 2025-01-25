@@ -85,7 +85,7 @@ signer = "Microsoft Corporation KEK CA 2011"
 # DbxUpdateSVN - Smuggled self revocation hash for Windows Boot Manager in the DBX database
 
 # AMD64
-[[DBX.Optional.files]]
+[[DBX.Optional.files]]  # TODOUG:  Includes SVNs - these are out of date
 path = "PostSignedObjects/Optional/DBX/amd64/DBXUpdate2024.bin"
 expected_sha1 = 0x0
 signer = "Microsoft Corporation KEK CA 2011"
