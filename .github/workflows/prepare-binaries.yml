@@ -73,7 +73,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Prepare Release Signed Archive
-      run: python scripts/prepare_signed_binaries.py.py PostSignedObjects --output ReleaseSignedArtifacts --version ${{ github.event.release.tag_name }}
+      run: python scripts/prepare_signed_binaries.py PostSignedObjects --output ReleaseSignedArtifacts --version ${{ github.event.release.tag_name }}
       if: startsWith(github.ref, 'refs/tags/')
 
     - name: Upload Signed Release Archive
