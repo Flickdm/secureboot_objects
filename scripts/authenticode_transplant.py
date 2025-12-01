@@ -167,6 +167,10 @@ def _extract_pe_hash_from_spc_indirect_data(content_bytes: bytes) -> tuple[bytes
                         algorithm_oid = OID_SHA256_STRING
                     elif OID_SHA1_DER in search_region:
                         algorithm_oid = OID_SHA1_STRING
+                    elif OID_SHA384_DER in search_region:
+                        algorithm_oid = OID_SHA384_STRING
+                    elif OID_SHA512_DER in search_region:
+                        algorithm_oid = OID_SHA512_STRING
 
                     logger.info(f"Extracted PE hash from SpcIndirectDataContent: {hash_bytes.hex()}")
                     if algorithm_oid:
