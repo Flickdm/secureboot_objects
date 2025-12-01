@@ -387,8 +387,12 @@ def _verify_pkcs7_signature(pkcs7_data: bytes, pe_data: bytes) -> dict:
 
             results['signers'].append(signer_result)
 
-        # Overall verification passes if all signers verified
-        results['verified'] = all(s['verified'] for s in results['signers']) and len(results['signers']) > 0
+        # Overall verification passes if all signers verified AND PE hash is valid
+        results['verified'] = (
+            all(s['verified'] for s in results['signers'])
+            and len(results['signers']) > 0
+            and authenticode_content_valid
+        )
 
     except Exception as e:
         results['errors'].append(f"Failed to verify PKCS#7 signature: {str(e)}")
