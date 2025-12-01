@@ -88,7 +88,7 @@ class RealFileSystem:
         return pefile.PE(filepath, fast_load=fast_load)
 
 
-def _get_hash_algorithm_from_oid(oid: str) -> hashes.HashAlgorithm | None:
+def _get_hash_algorithm_from_oid(oid: str) -> Optional[hashes.HashAlgorithm]:
     """Map OID to cryptography hash algorithm."""
     oid_map = {
         '2.16.840.1.101.3.4.2.1': hashes.SHA256(),
