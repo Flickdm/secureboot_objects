@@ -99,7 +99,7 @@ def _get_hash_algorithm_from_oid(oid: str) -> Optional[hashes.HashAlgorithm]:
     return oid_map.get(oid)
 
 
-def _extract_pe_hash_from_spc_indirect_data(content_bytes: bytes) -> tuple[bytes | None, str | None]:
+def _extract_pe_hash_from_spc_indirect_data(content_bytes: bytes) -> Tuple[Optional[bytes], Optional[str]]:
     """Extract PE file hash from SpcIndirectDataContent structure.
 
     SpcIndirectDataContent ::= SEQUENCE {
