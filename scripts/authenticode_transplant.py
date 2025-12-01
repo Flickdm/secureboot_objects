@@ -480,8 +480,7 @@ def get_authenticode_hash(pe_path: str, fs: FileSystemInterface = None) -> str:
         fs = RealFileSystem()
 
     # Read the raw PE data
-    with open(pe_path, 'rb') as f:
-        pe_data = f.read()
+    pe_data = fs.read_binary_file(pe_path)
 
     # Use the proper Authenticode hash calculation (defaults to SHA-256)
     hash_bytes = compute_authenticode_hash(pe_data)
