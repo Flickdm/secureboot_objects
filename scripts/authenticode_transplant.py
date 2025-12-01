@@ -355,6 +355,8 @@ def _verify_pkcs7_signature(pkcs7_data: bytes, pe_data: bytes) -> dict:
                     # However, for Authenticode, authenticated attributes are required
                     signer_result['error'] = "No authenticated attributes found - required for Authenticode"
                     results['errors'].append(signer_result['error'])
+                    results['signers'].append(signer_result)
+                    continue
 
                 # Verify signature
                 public_key = signer_cert.public_key()
