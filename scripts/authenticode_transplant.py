@@ -186,7 +186,7 @@ def _extract_pe_hash_from_spc_indirect_data(content_bytes: bytes) -> tuple[bytes
         return None, None
 
 
-def _extract_certificates_from_pkcs7(pkcs7_data: bytes) -> list:
+def _extract_certificates_from_pkcs7(pkcs7_data: bytes) -> List[x509.Certificate]:
     """Extract X.509 certificates from PKCS7 data."""
     certificates = []
     try:
