@@ -1,0 +1,51 @@
+# This workflow gates changes that could break the reproducibility of the signed
+# DBX payloads. Whenever the DBX metadata JSON or the committed signed DBX files
+# change, it reproduces the expected signature-list payload from the JSON and
+# asserts it matches the signed files byte-for-byte.
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+name: Validate Signed DBX
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'PreSignedObjects/DBX/dbx_info_msft_latest.json'
+      - 'PostSignedObjects/SignedByKEK2011/**'
+      - 'PostSignedObjects/SignedByKEK2023/**'
+      - 'scripts/validate_signed_dbx.py'
+      - 'scripts/secure_boot_default_keys.py'
+      - 'pip-requirements.txt'
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'PreSignedObjects/DBX/dbx_info_msft_latest.json'
+      - 'PostSignedObjects/SignedByKEK2011/**'
+      - 'PostSignedObjects/SignedByKEK2023/**'
+      - 'scripts/validate_signed_dbx.py'
+      - 'scripts/secure_boot_default_keys.py'
+      - 'pip-requirements.txt'
+
+jobs:
+  validate:
+    name: Validate Signed DBX Payloads
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Self
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+    - name: Set up Python
+      uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      with:
+        python-version: 3.12
+        cache: 'pip'
+        cache-dependency-path: pip-requirements.txt
+
+    - name: Install Pip Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r pip-requirements.txt
+
+    - name: Validate Signed DBX Payloads
+      run: python scripts/validate_signed_dbx.py PostSignedObjects --dbx-json PreSignedObjects/DBX/dbx_info_msft_latest.json
